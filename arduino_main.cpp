@@ -22,6 +22,7 @@ void setup(void)
 {
     Serial.begin();
     pinMode(ledPin, OUTPUT);
+    digitalWrite(ledPin, LOW);
     capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
 }
 
