@@ -13,7 +13,6 @@ Stm32F402
 Breadboard jumper wires (M-M, F-F, M-F wires)   
 OLED Module 12864 128x64 I2C (https://www.amazon.com/dp/B09JWN8K99?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 
-
 ## 3 Configuraiton
 
 Enable RTduino
