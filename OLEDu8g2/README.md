@@ -2,7 +2,10 @@
 
 ## 1 Introduction
 
-Plant Communicator project is an opensource project.
+u8g2 is an opensource Arduino powerful library which also run on RT-Thread RTOS. 
+
+Reference:
+https://github.com/olikraus/u8g2/wiki
 
 ## 2 Hardware 
 
@@ -23,3 +26,5 @@ Enable u8g2 library
 
 Note: To setup u8g2, use the correct constructor for your display. The constructor name defines display type, controller, RAM buffer size and communication protocol. 
 If your display is not exactly available, try a constructor with the same display controller name.
+
+
