@@ -2,7 +2,7 @@
 
 ## 1 Introduction
 
-u8g2 is an opensource Arduino powerful library which also run on RT-Thread RTOS. 
+u8g2 is an opensource Arduino powerful library which also runs on RT-Thread RTOS. 
 
 Reference:
 https://github.com/olikraus/u8g2/wiki
