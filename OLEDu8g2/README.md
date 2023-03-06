@@ -15,11 +15,11 @@ OLED Module 12864 128x64 I2C (https://www.amazon.com/dp/B09JWN8K99?psc=1&ref=ppx
 
 Enable RTduino
 
-
+![alt text](http://url/to/img.png)
 
 Enable u8g2 library
 
-
+![alt text](http://url/to/img.png)
 
 Note: To setup u8g2, use the correct constructor for your display. The constructor name defines display type, controller, RAM buffer size and communication protocol. 
 If your display is not exactly available, try a constructor with the same display controller name.
