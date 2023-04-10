@@ -22,10 +22,9 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE,
 
 void drawWeatherSymbol(uint8_t x, uint8_t y, uint8_t symbol)
 {
-  // fonts used:
-  // u8g2_font_open_iconic_embedded_6x_t
-  // u8g2_font_open_iconic_weather_6x_t
-  // encoding values, see: https://github.com/olikraus/u8g2/wiki/fntgrpiconic
+    // fonts used:
+    // u8g2_font_open_iconic_weather_4x_t
+    // encoding values, see: https://github.com/olikraus/u8g2/wiki/fntgrpiconic
 
     switch(symbol)
     {
@@ -49,10 +48,15 @@ void drawWeather(uint8_t symbol, float degree)
     u8g2.setFont(u8g2_font_logisoso32_tf);
     u8g2.setCursor(48+3, 38);
     u8g2.print(feh);
+
     if(symbol == TEMP)
+    {
         u8g2.print("�F");        // requires enableUTF8Print()
+    }
     else if(symbol == HUMIDITY)
+    {
         u8g2.print("%");
+    }
 }
 
 void draw(const char *s, uint8_t symbol, float degree)
@@ -81,13 +85,13 @@ void setup(void)
     u8g2.begin();
     u8g2.enableUTF8Print();
 
-
-    if (! aht.begin()) {
-      Serial.println("Could not find AHT? Check wiring");
-      while (1) delay(10);
+    if (! aht.begin()) 
+    {
+        Serial.println("Could not find AHT? Check wiring");
+        while (1) delay(10);
     }
-    Serial.println("AHT10 or AHT20 found");
 
+    Serial.println("AHT10 or AHT20 found");
 }
 
 void loop(void)
