@@ -97,7 +97,6 @@ void setup(void)
     u8g2.begin();
     u8g2.enableUTF8Print();
 
-
     if (! aht.begin()) {
       Serial.println("Could not find AHT? Check wiring");
       while (1) delay(10);
