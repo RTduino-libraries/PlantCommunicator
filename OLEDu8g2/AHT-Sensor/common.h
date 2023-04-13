@@ -40,6 +40,7 @@ class Weather{
             void newThread();
             float getHumidity();
             float getTemp();
+            static void thread_entry(void *parameter);
 
     private:
             float temp;

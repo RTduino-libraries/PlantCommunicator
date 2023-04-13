@@ -78,7 +78,16 @@ void Weather::draw(const char *s, uint8_t symbol, float degree)
 
 void Weather::newThread(void)
 {
-       rt_kprintf("Starting a new thread\n");
+    tid = rt_thread_create("thread", _weather.thread_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
+
+    if(tid != RT_NULL)
+    {
+        rt_thread_startup(tid);
+    }
+    else
+    {
+        rt_thread_delete(tid);
+    }
 }
 
 float Weather::getTemp(void)
