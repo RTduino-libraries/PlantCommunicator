@@ -5,7 +5,7 @@
  *
  * Change Logs:
  * Date           Author            Notes
- * 2023-04-18     Stanley Lwin      first version
+ * 2023-04-12     Stanley Lwin      first version
  */
 #ifndef __COMMON_H__
 #define __COMMON_H__
@@ -29,8 +29,15 @@ const int writePin = 4;
 const int readPin = 2;
 const int ledPin = D7;
 
+/*RGB - Led */
+const int ledR = D6;
+const int ledB = D3;
+const int ledG = D5;
+long LedVal = 0;
+int brightness = 0;
+int fadeAmount = 5;
+
 class Weather{
-    
     public:
             Weather(float t, float h)
             {
@@ -39,7 +46,6 @@ class Weather{
 
                 newThread();
             }
-
             void drawWeatherSymbol(uint8_t x, uint8_t y, uint8_t symbol);
             void drawWeather(uint8_t symbol, float degree);
             void draw(const char *s, uint8_t symbol, float degree);
@@ -47,6 +53,8 @@ class Weather{
             float getHumidity();
             float getTemp();
             static void thread_entry(void *parameter);
+
+
 
     private:
             float temp;

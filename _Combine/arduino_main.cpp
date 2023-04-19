@@ -5,7 +5,7 @@
  *
  * Change Logs:
  * Date           Author            Notes
- * 2023-04-18     Stanley Lwin      first version
+ * 2023-04-12     Stanley Lwin      first version
  */
 
 #include <Adafruit_AHTX0.h>
@@ -29,7 +29,8 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE,
 void Weather::drawWeatherSymbol(uint8_t x, uint8_t y, uint8_t symbol)
 {
   // fonts used:
-  // u8g2_font_open_iconic_weather_4x_t
+  // u8g2_font_open_iconic_embedded_6x_t
+  // u8g2_font_open_iconic_weather_6x_t
   // encoding values, see: https://github.com/olikraus/u8g2/wiki/fntgrpiconic
 
     switch(symbol)
@@ -55,7 +56,7 @@ void Weather::drawWeather(uint8_t symbol, float degree)
     u8g2.setCursor(48+3, 38);
     u8g2.print(feh);
     if(symbol == TEMP)
-        u8g2.print("�F");        // requires enableUTF8Print()
+        u8g2.print("°F");        // requires enableUTF8Print()
     else if(symbol == HUMIDITY)
         u8g2.print("%");
 }
@@ -99,24 +100,19 @@ void Weather::newThread(void)
 void Weather:: thread_entry(void *parameter)
 {
     digitalWrite(ledPin, HIGH);
-    // capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
+    capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
 
     while(1)
     {
         long sensorValue = capSensor.capacitiveSensor(30);
+        Serial.println(sensorValue);
 
-           Serial.println(sensorValue);
+        /*map(value, fromLow, fromHigh, toLow, toHigh)*/
+        LedVal = map(sensorValue, 0, 1023, 0, 255);
 
-           if (sensorValue > 300 )
-           {
-               digitalWrite(ledPin, HIGH);
-           }
-           else
-           {
-               digitalWrite(ledPin, LOW);
+        analogWrite(ledR, LedVal - brightness ); // digital using PWM
 
-           }
-           delay(30);
+        delay(30);
     }
 }
 
