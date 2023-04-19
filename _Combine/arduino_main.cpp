@@ -99,7 +99,7 @@ void Weather::newThread(void)
 void Weather:: thread_entry(void *parameter)
 {
     digitalWrite(ledPin, HIGH);
-    capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
+    // capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
 
     while(1)
     {
