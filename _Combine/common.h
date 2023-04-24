@@ -43,9 +43,9 @@ struct ops plantC;
 ops_t local  = &plantC;
 
 void hta(void);
-void oled(volatile float *, volatile float *);
+static void oled(volatile float *, volatile float *);
 void cap(void);
-void led(int *);
+static void led(int *);
 
 #ifdef __cplusplus
 }

@@ -65,7 +65,7 @@ void hta(void)
     oled(&tempL, &humidityL);
 }
 
-void oled(volatile float *temp, volatile float *humidity)
+static void oled(volatile float *temp, volatile float *humidity)
 {
     u8g2.clearBuffer();                   // clear the internal memory
     u8g2.setFont(u8g2_font_helvB10_tr);   // choose a suitable font
@@ -94,7 +94,7 @@ void cap(void)
     led(&ledVal);
 }
 
-void led(int *ledVal)
+static void led(int *ledVal)
 {
     analogWrite(ledB, 5 - *ledVal); 
     analogWrite(ledR, 10 - *ledVal);
