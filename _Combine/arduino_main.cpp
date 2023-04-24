@@ -15,6 +15,8 @@
 #include <CapacitiveSensor.h>
 #include "common.h"
 
+#define HTA ( local->ptr = hta)
+#define CAP (local->ptr = cap)
 #define EXEC (local->ptr())
 
 void setup()
@@ -41,11 +43,8 @@ void setup()
 
 void loop()
 {
-    /*func pointer mapping*/
-    local->ptr = hta;
-    EXEC;
-    local->ptr = cap;
-    EXEC;
+    HTA; EXEC;
+    CAP; EXEC;
 
     delay(15);
 }
