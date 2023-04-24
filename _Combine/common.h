@@ -5,7 +5,7 @@
  *
  * Change Logs:
  * Date           Author            Notes
- * 2023-04-12     Stanley Lwin      first version
+ * 2023-04-24     Stanley Lwin      first version
  */
 #ifndef __COMMON_H__
 #define __COMMON_H__
@@ -15,51 +15,37 @@
 extern "C"{
 #endif
 
-#define TEMP 0
-#define HUMIDITY  10
-
-/*Thread Info*/
-#define THREAD_PRIORITY 25
-#define THREAD_STACK_SIZE 512
-#define THREAD_TIMESLICE 5
-rt_thread_t tid= RT_NULL;
-
-/*Captive-Sensor*/
+/*Captive Sensor*/
 const int writePin = 4;
 const int readPin = 2;
 const int ledPin = D7;
+CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
 
-/*RGB - Led */
-const int ledR = D6;
-const int ledB = D3;
-const int ledG = D5;
-long LedVal = 0;
+/*LED pin*/
+int ledB = D3;
+int ledR = D6;
+int ledG = D5;
 int brightness = 0;
 int fadeAmount = 5;
 
-class Weather{
-    public:
-            Weather(float t, float h)
-            {
-                temp = t;
-                humidity = h;
+/*OLED Default Constructor*/
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
 
-                newThread();
-            }
-            void drawWeatherSymbol(uint8_t x, uint8_t y, uint8_t symbol);
-            void drawWeather(uint8_t symbol, float degree);
-            void draw(const char *s, uint8_t symbol, float degree);
-            void newThread();
-            float getHumidity();
-            float getTemp();
-            static void thread_entry(void *parameter);
+/*HTA sensor*/
+Adafruit_AHTX0 aht;
 
-
-
-    private:
-            float temp;
-            float humidity;
+struct ops{
+    void (*ptr) (void);
 };
+typedef struct ops *ops_t;
+
+struct ops plantC;
+ops_t local  = &plantC;
+
+void hta(void);
+void oled(volatile float *, volatile float *);
+void cap(void);
+void led(int *);
 
 #ifdef __cplusplus
 }

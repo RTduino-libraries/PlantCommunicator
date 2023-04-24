@@ -5,149 +5,109 @@
  *
  * Change Logs:
  * Date           Author            Notes
- * 2023-04-12     Stanley Lwin      first version
+ * 2023-04-24     Stanley Lwin      first version
  */
 
 #include <Adafruit_AHTX0.h>
-#include <rtthread.h>
 #include <Arduino.h>
-/* no capable of using in multi-thread environment */
 #include <U8g2lib.h>
-#include "common.h"
-/*Capacitive Sensor*/
+#include "U8x8lib.h"
 #include <CapacitiveSensor.h>
-CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
+#include "common.h"
 
-Adafruit_AHTX0 aht;
-sensors_event_t humidity, temp;
+#define EXEC (local->ptr())
 
-Weather _weather(temp.temperature, humidity.relative_humidity);
-
-/*Default Constructor*/
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
-
-void Weather::drawWeatherSymbol(uint8_t x, uint8_t y, uint8_t symbol)
+void setup()
 {
-  // fonts used:
-  // u8g2_font_open_iconic_embedded_6x_t
-  // u8g2_font_open_iconic_weather_6x_t
-  // encoding values, see: https://github.com/olikraus/u8g2/wiki/fntgrpiconic
+    Serial.begin(115200);
 
-    switch(symbol)
+    /*HTA sensor*/
+    Serial.println("Adafruit AHT10/AHT20 demo!");
+
+    if (! aht.begin())
     {
-        case TEMP:
-            u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
-            u8g2.drawGlyph(x, y, 65);
-            break;
-        case HUMIDITY:
-            u8g2.setFont(u8g2_font_open_iconic_thing_4x_t);
-            u8g2.drawGlyph(x, y, 72);
-            break;
-    }
-}
-
-void Weather::drawWeather(uint8_t symbol, float degree)
-{
-    /* x, y */
-    int feh;
-    feh = (degree * 9 / 5 ) + 32;
-    drawWeatherSymbol(0, 35, symbol);
-    u8g2.setFont(u8g2_font_logisoso32_tf);
-    u8g2.setCursor(48+3, 38);
-    u8g2.print(feh);
-    if(symbol == TEMP)
-        u8g2.print("°F");        // requires enableUTF8Print()
-    else if(symbol == HUMIDITY)
-        u8g2.print("%");
-}
-
-void Weather::draw(const char *s, uint8_t symbol, float degree)
-{
-    int16_t offset = -(int16_t)u8g2.getDisplayWidth();
-    int16_t len = strlen(s);
-
-    u8g2.clearBuffer();                // clear the internal memory
-    drawWeather(symbol, degree);      // draw the icon and degree only once
-    for(;;)                           // then do the scrolling
-    {
-        u8g2.setFont(u8g2_font_fur14_tf);
-        u8g2.drawStr(0,58,s);
-        u8g2.sendBuffer();              // transfer internal memory to the display
-
-        delay(2);
-        offset+=2;
-        if ( offset > len*8+1 )
-            break;
-    }
-}
-
-void Weather::newThread(void)
-{
-       rt_kprintf("Starting a new thread\n");
-       tid = rt_thread_create("thread", _weather.thread_entry, RT_NULL, THREAD_STACK_SIZE, THREAD_PRIORITY, THREAD_TIMESLICE);
-
-         if(tid != RT_NULL)
-         {
-             rt_thread_startup(tid);
-         }
-         else
-         {
-             rt_thread_delete(tid);
-         }
-}
-
-/*Entry function for tid1*/
-void Weather:: thread_entry(void *parameter)
-{
-    digitalWrite(ledPin, HIGH);
-    capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
-
-    while(1)
-    {
-        long sensorValue = capSensor.capacitiveSensor(30);
-        Serial.println(sensorValue);
-
-        /*map(value, fromLow, fromHigh, toLow, toHigh)*/
-        LedVal = map(sensorValue, 0, 1023, 0, 255);
-
-        analogWrite(ledR, LedVal - brightness ); // digital using PWM
-
-        delay(30);
-    }
-}
-
-float Weather::getTemp(void)
-{
-    return temp;
-}
-
-float Weather::getHumidity(void)
-{
-    return humidity;
-}
-
-void setup(void)
-{
-    aht.begin();
-    u8g2.begin();
-    u8g2.enableUTF8Print();
-
-
-    if (! aht.begin()) {
-      Serial.println("Could not find AHT? Check wiring");
-      while (1) delay(10);
+        Serial.println("Could not find AHT? Check wiring");
+        while (1) delay(10);
     }
     Serial.println("AHT10 or AHT20 found");
-    _weather.newThread();
+
+    /*OLED */
+    u8g2.begin();
+
+    /*Captive Sensor*/
+    digitalWrite(ledPin, LOW);
+    capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
 }
 
-void loop(void)
+void loop()
 {
+    /*func pointer mapping*/
+    local->ptr = hta;
+    EXEC;
+    local->ptr = cap;
+    EXEC;
 
-    aht.getEvent(&humidity, &temp);
+    delay(15);
+}
 
-    _weather.draw("Temperature", TEMP, _weather.getTemp());
-    _weather.draw("Humidity", HUMIDITY, _weather.getHumidity());
+/*Sensor Group One */
+void hta(void)
+{
+    sensors_event_t humidity, temp;
+    volatile float tempL, humidityL;
+
+    aht.getEvent(&humidity, &temp);// populate temp and humidity objects with fresh data
+
+    tempL = temp.temperature;
+    humidityL = humidity.temperature;
+    Serial.print("Temperature: "); Serial.print(temp.temperature); Serial.println(" degrees C");
+    Serial.print("Humidity: "); Serial.print(humidity.relative_humidity); Serial.println("% rH");
+
+    oled(&tempL, &humidityL);
+}
+
+void oled(volatile float *temp, volatile float *humidity)
+{
+    u8g2.clearBuffer();                   // clear the internal memory
+    u8g2.setFont(u8g2_font_helvB10_tr);   // choose a suitable font
+
+    u8g2.drawStr(1,20,"Temp");    // write something to the internal memory
+    u8g2.setCursor(75, 20); // x,y
+    u8g2.drawStr(115,20,"C");
+    u8g2.print(*temp);
+
+    u8g2.drawStr(1,50,"Humidity");
+    u8g2.setCursor(75, 50); // x,y
+    u8g2.print(*humidity);
+    u8g2.drawStr(115,50,"%");
+
+    u8g2.sendBuffer();
+}
+
+/*Sensor Group Two */
+void cap(void)
+{
+    long sensorValue = capSensor.capacitiveSensor(30);
+    int ledVal;
+
+    ledVal = map(sensorValue, 0, 2500, 0, 255);
+    Serial.print("Captive: "); Serial.println(sensorValue);
+    led(&ledVal);
+}
+
+void led(int *ledVal)
+{
+    analogWrite(ledB, 5 - *ledVal); //this is digital using PWM
+    analogWrite(ledR, 10 - *ledVal);
+    analogWrite(ledG, 12 - *ledVal);
+
+    brightness = brightness + fadeAmount;
+
+    if (brightness <= 0 || brightness >= 255)
+    {
+        fadeAmount = -fadeAmount;
+
+    }
 }
 
 
