@@ -56,7 +56,7 @@ void hta(void)
     sensors_event_t humidity, temp;
     volatile float tempL, humidityL;
 
-    aht.getEvent(&humidity, &temp);// populate temp and humidity objects with fresh data
+    aht.getEvent(&humidity, &temp);
 
     tempL = temp.temperature;
     humidityL = humidity.temperature;
@@ -71,7 +71,7 @@ void oled(volatile float *temp, volatile float *humidity)
     u8g2.clearBuffer();                   // clear the internal memory
     u8g2.setFont(u8g2_font_helvB10_tr);   // choose a suitable font
 
-    u8g2.drawStr(1,20,"Temp");    // write something to the internal memory
+    u8g2.drawStr(1,20,"Temp"); 
     u8g2.setCursor(75, 20); // x,y
     u8g2.drawStr(115,20,"C");
     u8g2.print(*temp);
@@ -97,7 +97,7 @@ void cap(void)
 
 void led(int *ledVal)
 {
-    analogWrite(ledB, 5 - *ledVal); //this is digital using PWM
+    analogWrite(ledB, 5 - *ledVal); 
     analogWrite(ledR, 10 - *ledVal);
     analogWrite(ledG, 12 - *ledVal);
 
