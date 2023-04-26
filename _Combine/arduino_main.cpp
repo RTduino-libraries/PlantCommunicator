@@ -11,7 +11,6 @@
 #include <Adafruit_AHTX0.h>
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "U8x8lib.h"
 #include <CapacitiveSensor.h>
 #include "common.h"
 

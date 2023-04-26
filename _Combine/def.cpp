@@ -1,7 +1,16 @@
+/*
+ * Copyright (c) 2021-2022, RTduino Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author            Notes
+ * 2023-04-24     Stanley Lwin      first version
+ */
+
 #include <Adafruit_AHTX0.h>
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "U8x8lib.h"
 #include <CapacitiveSensor.h>
 #include "common.h"
 
