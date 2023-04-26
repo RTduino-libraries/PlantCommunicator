@@ -11,6 +11,11 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
+#include <Adafruit_AHTX0.h>
+#include <Arduino.h>
+#include <U8g2lib.h>
+#include <CapacitiveSensor.h>
+
 /*__cplusplus*/
 #ifdef __cplusplus
 extern "C"{

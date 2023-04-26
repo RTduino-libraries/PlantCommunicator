@@ -8,10 +8,6 @@
  * 2023-04-24     Stanley Lwin      first version
  */
 
-#include <Adafruit_AHTX0.h>
-#include <Arduino.h>
-#include <U8g2lib.h>
-#include <CapacitiveSensor.h>
 #include "common.h"
 
 /*LED pin*/
