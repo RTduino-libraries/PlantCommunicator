@@ -19,6 +19,21 @@
 #define CAP (local->ptr = cap)
 #define EXEC (local->ptr())
 
+/*HTA sensor*/
+Adafruit_AHTX0 aht;
+
+/*OLED Default Constructor*/
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
+
+/*Captive Sensor*/
+const int writePin = 4;
+const int readPin = 2;
+const int ledPin = D7;
+CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
+
+struct ops plant;
+ops_t local  = &plant;
+
 void setup()
 {
     Serial.begin(115200);
@@ -43,70 +58,9 @@ void setup()
 
 void loop()
 {
-    HTA; EXEC;
-    CAP; EXEC;
+
+    HTA;EXEC;
+    CAP;EXEC;
 
     delay(15);
 }
-
-/*Sensor Group One */
-void hta(void)
-{
-    sensors_event_t humidity, temp;
-    volatile float tempL, humidityL;
-
-    aht.getEvent(&humidity, &temp);
-
-    tempL = temp.temperature;
-    humidityL = humidity.temperature;
-    Serial.print("Temperature: "); Serial.print(temp.temperature); Serial.println(" degrees C");
-    Serial.print("Humidity: "); Serial.print(humidity.relative_humidity); Serial.println("% rH");
-
-    oled(&tempL, &humidityL);
-}
-
-static void oled(volatile float *temp, volatile float *humidity)
-{
-    u8g2.clearBuffer();                   // clear the internal memory
-    u8g2.setFont(u8g2_font_helvB10_tr);   // choose a suitable font
-
-    u8g2.drawStr(1,20,"Temp"); 
-    u8g2.setCursor(75, 20); // x,y
-    u8g2.drawStr(115,20,"C");
-    u8g2.print(*temp);
-
-    u8g2.drawStr(1,50,"Humidity");
-    u8g2.setCursor(75, 50); // x,y
-    u8g2.print(*humidity);
-    u8g2.drawStr(115,50,"%");
-
-    u8g2.sendBuffer();
-}
-
-/*Sensor Group Two */
-void cap(void)
-{
-    long sensorValue = capSensor.capacitiveSensor(30);
-    int ledVal;
-
-    ledVal = map(sensorValue, 0, 2500, 0, 255);
-    Serial.print("Captive: "); Serial.println(sensorValue);
-    led(&ledVal);
-}
-
-static void led(int *ledVal)
-{
-    analogWrite(ledB, 5 - *ledVal); 
-    analogWrite(ledR, 10 - *ledVal);
-    analogWrite(ledG, 12 - *ledVal);
-
-    brightness = brightness + fadeAmount;
-
-    if (brightness <= 0 || brightness >= 255)
-    {
-        fadeAmount = -fadeAmount;
-
-    }
-}
-
-
