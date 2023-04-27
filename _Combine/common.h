@@ -8,13 +8,14 @@
  * 2023-04-24     Stanley Lwin      first version
  * Next step to refactor the code by Mecto to professional code. ^@^
  */
-#ifndef __COMMON_H__
-#define __COMMON_H__
 
 #include <Adafruit_AHTX0.h>
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include <CapacitiveSensor.h>
+
+#ifndef __COMMON_H__
+#define __COMMON_H__
 
 /*__cplusplus*/
 #ifdef __cplusplus
