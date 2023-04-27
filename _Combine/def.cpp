@@ -10,6 +10,8 @@
 
 #include "common.h"
 
+#define TO_FAHRENHEIT(celsuis) ((celsuis * 9/5) + 32)
+
 /*LED pin*/
 int ledB = D3;
 int ledR = D6;
@@ -25,10 +27,10 @@ void hta(void)
 
     aht.getEvent(&humidity, &temp);// populate temp and humidity objects with fresh data
 
-    tempL = (temp.temperature * 9 / 5) + 32;
+    tempL = TO_FAHRENHEIT(temp.temperature);
     humidityL = humidity.temperature;
-    Serial.print("Temperature: "); Serial.print(temp.temperature); Serial.println(" degrees F");
-    Serial.print("Humidity: "); Serial.print(humidity.relative_humidity); Serial.println("% rH");
+    Serial.print("Temperature: "); Serial.print(tempL); Serial.println(" degrees F");
+    Serial.print("Humidity: "); Serial.print(humidityL); Serial.println("% rH");
 
     oled(&tempL, &humidityL);
 }
