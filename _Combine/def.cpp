@@ -10,8 +10,6 @@
 
 #include "common.h"
 
-#define TO_FAHRENHEIT(celsuis) ((celsuis * 9/5) + 32)
-
 /*LED pin*/
 int ledB = D3;
 int ledR = D6;

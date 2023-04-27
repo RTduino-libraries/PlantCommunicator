@@ -14,6 +14,8 @@
 #include <U8g2lib.h>
 #include <CapacitiveSensor.h>
 
+#define TO_FAHRENHEIT(celsuis) ((celsuis * 9/5) + 32)
+
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
