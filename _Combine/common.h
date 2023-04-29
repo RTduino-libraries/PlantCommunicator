@@ -28,8 +28,7 @@ extern "C"{
 
 #define CHECK_SENSOR(data, sensor_name) do { \
     if(!data) { \
-        printf("%s sensor data not available \n", sensor_name); \
-        exit(1); \
+        puts(sensor_name "sensor data not available"); \
     } \
 } while(0)
 
