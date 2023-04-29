@@ -71,7 +71,7 @@ void display_led(int *ledVal)
     }
 }
 
-/*this inline assembly function. Need a bug fix*/
+/*this inline assembly function needs a bug fix*/
 float to_fahrenheit(float celsius) {
     float fahrenheit = 0.00;
     asm volatile (
