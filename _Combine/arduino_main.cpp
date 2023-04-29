@@ -9,9 +9,10 @@
  */
 
 #include "common.h"
+#include <TaskScheduler/TaskScheduler.h>
 
-#define HTA ( local->ptr = hta)
-#define CAP (local->ptr = cap)
+#define HTA ( local->ptr = read_htaSensor)
+#define CAP (local->ptr = read_touchSensor)
 #define EXEC (local->ptr())
 
 /*HTA sensor*/
@@ -26,36 +27,67 @@ const int readPin = 2;
 const int ledPin = D7;
 CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
 
+/*func pointer structure*/
 struct ops plant;
 ops_t local  = &plant;
+
+/*Task Scheduler Obj*/
+Scheduler runner;
+
+//Tasks
+Task htaSensor(2000, TASK_FOREVER, &htaSensor_Callback);
+Task touchSensor(3000, TASK_FOREVER, &touchSensor_Callback);
 
 void setup()
 {
     Serial.begin(115200);
 
     /*HTA sensor*/
-    Serial.println("Adafruit AHT10/AHT20 demo!");
+    Serial.println("Plant Communication Demo App");
 
-    if (! aht.begin())
+    if (!aht.begin())
     {
         Serial.println("Could not find AHT? Check wiring");
         while (1) delay(10);
     }
-    Serial.println("AHT10 or AHT20 found");
+    Serial.println("AHT10 or AHT20 begin: ");
 
     /*OLED */
-    u8g2.begin();
-
+    if(!u8g2.begin())
+    {
+        Serial.println("Could not find Oled? Check wiring");
+    }
+    Serial.println("u8g2 sensor begin !");
     /*Captive Sensor*/
     digitalWrite(ledPin, LOW);
     capSensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
+    Serial.println("capative sensor begin");
+
+    /*Task Scheduler*/
+    runner.init();
+    runner.addTask(htaSensor);
+    runner.addTask(touchSensor);
+    htaSensor.enable();
+    touchSensor.enable();
+    Serial.println("task scheduler begin");
 }
 
 void loop()
 {
-
-    HTA;EXEC;
-    CAP;EXEC;
-
+    runner.execute();
     delay(15);
 }
+
+void htaSensor_Callback() {
+    Serial.println("################HTA Sensor################");
+    HTA;EXEC;
+    htaSensor.setInterval(50);
+}
+
+void touchSensor_Callback()
+{
+    Serial.println("################Touch Sensor################");
+    CAP;EXEC;
+    touchSensor.setInterval(500);
+}
+
