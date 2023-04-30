@@ -72,7 +72,7 @@ void display_led(int *ledVal)
 }
 
 /*this inline assembly function needs a bug fix*/
-float to_fahrenheit(float celsius) {
+inline float to_fahrenheit(float celsius) {
     float fahrenheit = 0.00;
     asm volatile (
         "push {lr}\n\t"   
