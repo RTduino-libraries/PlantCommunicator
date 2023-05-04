@@ -12,7 +12,7 @@
 #include <TaskScheduler/TaskScheduler.h>
 
 #define HTA ( local->ptr = read_htaSensor)
-#define CAP (local->ptr = read_touchSensor)
+#define TOUCH (local->ptr = read_touchSensor)
 #define EXEC (local->ptr())
 
 /*HTA sensor*/
@@ -37,6 +37,12 @@ Scheduler runner;
 //Tasks
 Task htaSensor(2000, TASK_FOREVER, &htaSensor_Callback);
 Task touchSensor(3000, TASK_FOREVER, &touchSensor_Callback);
+
+// error handling
+volatile int sensor_error = 0;
+
+//to track the sensor available
+bool sensor_available = true;
 
 void setup()
 {
@@ -75,7 +81,7 @@ void setup()
 void loop()
 {
     runner.execute();
-    delay(15);
+    delay(1);
 }
 
 void htaSensor_Callback() {
@@ -87,7 +93,7 @@ void htaSensor_Callback() {
 void touchSensor_Callback()
 {
     Serial.println("################Touch Sensor################");
-    CAP;EXEC;
+    TOUCH;EXEC;
     touchSensor.setInterval(500);
 }
 
