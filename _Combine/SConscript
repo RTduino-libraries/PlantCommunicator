@@ -6,7 +6,7 @@ CPPPATH = [cwd]
 src = ['main.c']
 
 if GetDepend(['PKG_USING_RTDUINO']) and not GetDepend(['RTDUINO_NO_SETUP_LOOP']):
-    src += ['arduino_main.cpp','aht10.cpp','recovery.cpp','capac_sensor.cpp','rgb.cpp']
+    src += ['arduino_main.cpp','aht10.cpp','capac_sensor.cpp','rgb.cpp']
 
 group = DefineGroup('Applications', src, depend = [''], CPPPATH = CPPPATH)
 
