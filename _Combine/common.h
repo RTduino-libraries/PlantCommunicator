@@ -22,7 +22,7 @@
 extern "C"{
 #endif
 
-#define ERR -1
+#define ERR 0
 #define OK 1
 
 #define TO_FAHRENHEIT(celsuis) ((celsuis * 1.8f) + 32.0f)
@@ -35,15 +35,24 @@ extern "C"{
     sensor_error = OK; \
 } while(0)
 
-void read_htaSensor(void);
-void display_oled(volatile float *, volatile float *);
-void read_touchSensor(void);
-void display_led(volatile int *);
-float to_fahrenheit(float celsius);
-// Callback methods prototypes
-void htaSensor_Callback();
-void touchSensor_Callback();
+/*AHT sensor prototypes*/
+void temp_humi_init(void);
+float get_temp(void);
+float get_humi(void);
 
+/*Capacitive Sensor prototypes*/
+void capac_init(void);
+int get_capac(void);
+
+/*OLED prototypes*/
+void oled_init(void);
+void display_oled(volatile float, volatile float);
+
+/*RGB prototype*/
+void rgb_init(void);
+void set_rgb(volatile int);
+
+/*Interface*/
 struct ops{
     void (*ptr) (void);
 };
@@ -51,10 +60,9 @@ typedef struct ops *ops_t;
 
 extern Adafruit_AHTX0 aht;
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
-extern CapacitiveSensor capSensor; //CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
+extern CapacitiveSensor capSensor;
 extern ops_t local;
-
-extern volatile int sensor_error;
+extern int sensor_error;
 
 #ifdef __cplusplus
 }
