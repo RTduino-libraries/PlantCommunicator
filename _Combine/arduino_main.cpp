@@ -92,6 +92,10 @@ void display_oled(volatile float temp, volatile float humidity)
     u8g2.print(humidity);
     u8g2.drawStr(115,50,"%");
 
+    /*Menu Setting - Need to refactor with page buffer*/
+    u8g2.setFont(u8g2_font_open_iconic_embedded_2x_t);
+    u8g2.drawGlyph(1, 65, 66 );
+
     u8g2.sendBuffer();
 }
 
