@@ -19,11 +19,11 @@
 #define EXEC (local->ptr())
 
 /*OLED Default Constructor*/
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
+static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
 
 /*func pointer structure*/
 struct ops plant;
-ops_t local  = &plant;
+ops_t self = &plant;
 
 /*Task Scheduler Obj*/
 Scheduler runner;

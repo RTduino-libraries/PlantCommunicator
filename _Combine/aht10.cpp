@@ -10,7 +10,7 @@
 
 #include "common.h"
 
-Adafruit_AHTX0 aht;
+static Adafruit_AHTX0 aht;
 
 void temp_humi_init(void)
 {

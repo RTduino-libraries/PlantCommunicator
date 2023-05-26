@@ -59,7 +59,8 @@ struct ops{
 };
 typedef struct ops *ops_t;
 
-extern ops_t local;
+extern ops_t self;
+/***This code will move to err.h later. ***/
 extern int sensor_error;
 
 #ifdef __cplusplus

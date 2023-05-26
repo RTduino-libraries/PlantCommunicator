@@ -13,7 +13,7 @@
 const int writePin = 4;
 const int readPin = 2;
 const int ledPin = D7;
-CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
+static CapacitiveSensor capSensor = CapacitiveSensor(writePin,readPin);
 
 void capac_init(void)
 {
