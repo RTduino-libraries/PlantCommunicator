@@ -11,12 +11,12 @@
 #include "common.h"
 #include <TaskScheduler/TaskScheduler.h>
 
-#define HTA_INIT ( local->ptr = temp_humi_init)
-#define CAPAC_INIT (local->ptr = capac_init)
-#define OLED_INIT (local->ptr = oled_init)
-#define RGB_INIT (local->ptr = rgb_init)
-#define TASK_INIT (local->ptr = task_init)
-#define EXEC (local->ptr())
+#define HTA_INIT ( self->ptr = temp_humi_init)
+#define CAPAC_INIT (self->ptr = capac_init)
+#define OLED_INIT (self->ptr = oled_init)
+#define RGB_INIT (self->ptr = rgb_init)
+#define TASK_INIT (self->ptr = task_init)
+#define EXEC (self->ptr())
 
 /*OLED Default Constructor*/
 static U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2 (U8G2_R0, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE);
