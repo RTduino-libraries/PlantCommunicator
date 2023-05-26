@@ -27,6 +27,7 @@ extern "C"{
 
 #define TO_FAHRENHEIT(celsuis) ((celsuis * 1.8f) + 32.0f)
 
+/***This code will move to err.h later. ***/
 #define CHECK_SENSOR(data, sensor_name) do { \
     if(!data) { \
         puts(sensor_name "sensor data not available"); \
