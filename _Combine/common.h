@@ -36,14 +36,19 @@ extern "C"{
     sensor_error = OK; \
 } while(0)
 
+/*INIT services*/
+void task_init(void);
+
 /*AHT sensor prototypes*/
 void temp_humi_init(void);
 float get_temp(void);
 float get_humi(void);
+void htaSensor_Callback();
 
 /*Capacitive Sensor prototypes*/
 void capac_init(void);
 int get_capac(void);
+void touchSensor_Callback();
 
 /*OLED prototypes*/
 void oled_init(void);

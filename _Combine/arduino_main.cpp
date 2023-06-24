@@ -9,7 +9,7 @@
  */
 
 #include "common.h"
-#include <TaskScheduler/TaskScheduler.h>
+#include <TaskScheduler.h>
 
 #define HTA_INIT ( self->ptr = temp_humi_init)
 #define CAPAC_INIT (self->ptr = capac_init)
